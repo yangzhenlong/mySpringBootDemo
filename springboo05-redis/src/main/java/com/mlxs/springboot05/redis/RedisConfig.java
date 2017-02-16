@@ -1,4 +1,4 @@
-package com.mlxs.springboot05.redis.use01;
+package com.mlxs.springboot05.redis;
 
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
