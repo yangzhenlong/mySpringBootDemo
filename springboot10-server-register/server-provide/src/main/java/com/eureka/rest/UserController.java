@@ -45,13 +45,17 @@ public class UserController {
     @RequestMapping("/{id}")
     public String get(@PathVariable String id){
         logCurrServerInfo();
-        return "用户：" + id;
+        return discoveryClient.getLocalServiceInstance().getHost()
+                + discoveryClient.getLocalServiceInstance().getPort()
+                + "<hr/>用户：" + id;
     }
 
     @RequestMapping("/add/{name}")
     public String add(@PathVariable String name){
         logCurrServerInfo();
-        return "添加用户：" + name;
+        return discoveryClient.getLocalServiceInstance().getHost()
+                + discoveryClient.getLocalServiceInstance().getPort()
+                + "<hr/>添加用户：" + name;
     }
 
     @RequestMapping("/getAll")
@@ -61,7 +65,9 @@ public class UserController {
         for(int i=1; i<=5; i++){
             s = s + i + "测试测试" + System.currentTimeMillis() + "\n";
         }
-        return "所有用户：" + s;
+        return discoveryClient.getLocalServiceInstance().getHost()
+                + discoveryClient.getLocalServiceInstance().getPort()
+                + "<hr/>所有用户：" + s;
     }
     private void logCurrServerInfo(){
         LOGGER.info("当前服务信息------\n ServiceId:{}, \n Host:{}，\n Port:{}",

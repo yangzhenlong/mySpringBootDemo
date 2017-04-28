@@ -30,7 +30,7 @@ public class CompanyController {
         return "index";
     }
 
-    @RequestMapping("/server")
+    @RequestMapping("/client")
     public String client(){
         String description = discoveryClient.description();
         ServiceInstance localServiceInstance = discoveryClient.getLocalServiceInstance();
@@ -45,13 +45,17 @@ public class CompanyController {
     @RequestMapping("/{id}")
     public String get(@PathVariable String id){
         logCurrServerInfo();
-        return "用户：" + id;
+        return discoveryClient.getLocalServiceInstance().getHost()
+                + discoveryClient.getLocalServiceInstance().getPort()
+                + "<hr/>用户：" + id;
     }
 
     @RequestMapping("/add/{name}")
     public String add(@PathVariable String name){
         logCurrServerInfo();
-        return "添加用户：" + name;
+        return discoveryClient.getLocalServiceInstance().getHost()
+                + discoveryClient.getLocalServiceInstance().getPort()
+                + "<hr/>添加用户：" + name;
     }
 
     @RequestMapping("/getAll")
@@ -61,7 +65,9 @@ public class CompanyController {
         for(int i=1; i<=5; i++){
             s = s + i + "测试测试" + System.currentTimeMillis() + "\n";
         }
-        return "所有用户：" + s;
+        return discoveryClient.getLocalServiceInstance().getServiceId()
+                + discoveryClient.getLocalServiceInstance().getPort()
+                + "<hr/>所有用户：" + s;
     }
 
     private void logCurrServerInfo(){

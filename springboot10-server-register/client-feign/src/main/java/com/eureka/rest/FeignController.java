@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
  * @author yangzhenlong
  * @since 2017/4/13
  */
-@RestController()
+@RestController
 public class FeignController {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(FeignController.class);
@@ -25,9 +25,8 @@ public class FeignController {
     private ProviderFeignClient providerFeignClient;
     @RequestMapping("/feign")
     public String index(){
-        String s = providerFeignClient.add("测试");
         String all = providerFeignClient.getAll();
-        return s + "---\n---" + all;
+        return "------" + all;
     }
 
 }
