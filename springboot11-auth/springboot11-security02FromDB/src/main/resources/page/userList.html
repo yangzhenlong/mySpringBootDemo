@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Hello World!</title>
+</head>
+<body>
+<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+<table style="border:1px solid #eee;">
+    <th>
+        <td>id</td>
+        <td>name</td>
+        <td>pwd</td>
+        <td>角色</td>
+    </th>
+    <tr th:each="u:${userList}">
+        <td th:text="${u.id}">id</td>
+        <td th:text="${u.userName}">name</td>
+        <td th:text="${u.password}">pwd</td>
+        <td th:text="${u.role}">pwd</td>
+    </tr>
+</table>
+<p>点击 <a th:href="@{/}">返回</a> </p>
+</body>
+</html>
