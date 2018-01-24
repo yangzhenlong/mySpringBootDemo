@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {margin:0 auto;}
+        #add input {width:300px;}
+    </style>
+    <script src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
+    <script>
+        $(function () {
+            $("#div1").hide(); //先让div隐藏
+            $("#span1").click(function () {
+                $("#div1").fadeIn("slow");//淡入淡出效果 显示div
+            });
+            $("#span2").click(function () {
+                $("#div1").fadeOut("slow");//淡入淡出效果 隐藏div
+            })
+        });
+    </script>
+</head>
+<body>
+<style type="text/css">
+    .onecenter{text-align:center;width:200px;height:50px;}
+    #se{background-color:#006699 ;padding:20px;color:#FFF;}
+</style>
+<table border='1'cellspacing="0" cellpadding="5" >
+    <tr>
+        <td class='onecenter'>1</td>
+        <td class='onecenter' style='border-left:0px;border-right:0px;'  >2</td>
+        <td class='onecenter'>3</td>
+        <td>操作</td>
+    </tr>
+    <tr> <td class='onecenter'>a</td>
+        <td class='onecenter' style='border:0px'> b</td>
+        <td class='onecenter' > c</td>
+        <td><button>click</button></td>
+    </tr >
+    <tr id='se'>
+        <td class='onecenter' >中国</td>
+        <td class='onecenter' >我</td>
+        <td class='onecenter' >爱你</td>
+        <td><button>click</button></td>
+    </tr>
+</table>
+    <span id="span1">弹框</span>
+    <div id="div1" style="position: absolute;left: 338px;top: 91px;width: 446px;height: 294px;z-index: 1;border: solid #7A7A7A 4px;background-color: cornflowerblue;">
+        <div align="right" style="background-color:#CDCDCD;"><span id="span2" style="cursor:pointer">关闭</span>
+
+        </div>
+        <span>
+            <form>
+                <p>username:<input type="text"/><p/>
+                <p style="margin: 20px auto;">age:<input type="text"/><p/>
+                <input type="submit" value="submit"/><br/>
+            </form>
+        </span>
+    </div>
+</body>
+</html>

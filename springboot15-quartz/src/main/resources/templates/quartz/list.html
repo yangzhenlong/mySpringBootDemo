@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Hello World!</title>
+    <style>
+        *{margin:0 auto}
+        table tr th {background-color:#006699 ;padding:20px;color:#FFF;}
+        table tr td {text-align:center;width:200px;height:50px;}
+    </style>
+    <script src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
+    <script>
+        $(function () {
+            $("#div_add").hide(); //先让div隐藏
+            $("#add").click(function () {
+                $("#div_add").fadeIn("slow");//淡入淡出效果 显示div
+            });
+            $("#close_add").click(function () {
+                $("#div_add").fadeOut("slow");//淡入淡出效果 隐藏div
+            })
+
+            $("#div_updateCron").hide(); //先让div隐藏
+            $("#close_updateCron").click(function () {
+                $("#div_updateCron").fadeOut("slow");//淡入淡出效果 隐藏div
+            })
+        });
+
+        // -----------修改 cron--------
+        function updateCron(id, cron) {
+            //alert(id + "---" + cron)
+            $("#updateCron_id").val(id);
+            $("#updateCron_cron").val(cron);
+            $("#div_updateCron").fadeIn("slow");//淡入淡出效果 显示div
+        }
+    </script>
+</head>
+<body>
+<h1 style="margin:0 auto;" th:inline="text">Test 定时任务管理</h1>
+<hr/>
+<div>
+    <button id="add" style="margin-top: 30px;">添加任务</button>
+</div>
+<table cellspacing="0" cellpadding="5" style="border:1px solid #F00;">
+    <tr>
+        <th>id</th>
+        <th>名称</th>
+        <th>cron</th>
+        <th>状态</th>
+        <th>操作</th>
+    </tr>
+
+    <tr th:each="job: ${allJob}">
+        <td th:text="${job.id}"></td>
+        <td th:text="${job.jobName}"></td>
+        <td th:text="${job.cronExpression}"></td>
+        <td th:if="${job.status=='0'}" th:text="'未运行'"></td>
+        <td th:if="${job.status=='1'}" th:text="'运行中'"></td>
+        <td th:if="${job.status=='2'}" th:text="'暂停中'"></td>
+        <td th:if="${job.status=='0'}">
+            <a th:onclick="'startObj(' + ${job.id} + ')'">运行</a>&nbsp;
+            <a th:onclick="'updateCron(' + ${job.id} + ',\''+${job.cronExpression} +'\')'">修改</a>&nbsp;
+            <a th:onclick="'deleteObj(' + ${job.id} + ')'">删除</a>&nbsp;
+        </td>
+        <td th:if="${job.status=='1'}">
+            <a th:onclick="'pauseObj(' + ${job.id} + ')'">暂停</a>&nbsp;
+            <a th:onclick="'updateCron(' + ${job.id} + ',\''+${job.cronExpression} +'\')'">修改</a>&nbsp;
+            <a th:onclick="'deleteObj(' + ${job.id} + ')'">删除</a>&nbsp;
+        </td>
+        <td th:if="${job.status=='2'}">
+            <a th:onclick="'resumeObj(' + ${job.id} + ')'">恢复</a>&nbsp;
+            <a th:onclick="'updateCron(' + ${job.id} + ',\''+${job.cronExpression} +'\')'">修改</a>&nbsp;
+            <a th:onclick="'deleteObj(' + ${job.id} + ')'">删除</a>&nbsp;
+        </td>
+    </tr>
+</table>
+<!-- 添加任务 -->
+<div id="div_add" style="position: absolute;left: 350px;top: 100px;width: 446px;height: 294px;z-index: 1;border: solid #7A7A7A 4px;background-color: cornflowerblue;">
+    <div align="right" style="background-color:#CDCDCD;"><span id="close_add" style="cursor:pointer">关闭</span></div>
+    <span>
+        <form action="/quartz/add">
+            <p>任务名称:<input type="text" name="jobName"/></p>
+            <p>cron表达式:<input type="text" name="cronExpression"/></p>
+            <p>任务执行的类:<input type="text" name="fullClass"/></p>
+            <input type="submit" value="submit"/><br/>
+        </form>
+    </span>
+</div>
+<!-- 修改cron表达式-->
+<div id="div_updateCron" style="position: absolute;left: 350px;top: 100px;width: 446px;height: 180px;z-index: 1;border: solid #7A7A7A 4px;background-color: cornflowerblue;">
+    <div align="right" style="background-color:#CDCDCD;"><span id="close_updateCron" style="cursor:pointer">关闭</span>
+
+    </div>
+    <span>
+        <form action="/quartz/updateCron">
+            <input id="updateCron_id" type="text" name="id"/>
+            <p>cron表达式:<input id="updateCron_cron" type="text" name="cron"/></p>
+            <input type="submit" value="submit"/><br/>
+        </form>
+    </span>
+</div>
+
+    <script>
+        function startObj(objid){
+            if(confirm("确认开始任务")){
+                $.get("/quartz/start/" + objid,{}, function (result) {
+                    if(result.code == '0'){
+                        location.reload();
+                    }else{
+                        alert(result.msg);
+                    }
+                })
+            }
+        }
+        function pauseObj(objid){
+            if(confirm("确认暂停任务")){
+                $.get("/quartz/pause/" + objid,{}, function (result) {
+                    if(result.code == '0'){
+                        location.reload();
+                    }else{
+                        alert(result.msg);
+                    }
+                })
+            }
+        }
+        function resumeObj(objid){
+            if(confirm("确认恢复启动任务")){
+                $.get("/quartz/resume/" + objid,{}, function (result) {
+                    if(result.code == '0'){
+                        location.reload();
+                    }else{
+                        alert(result.msg);
+                    }
+                })
+            }
+        }
+
+        function deleteObj(objid){
+            if(confirm("确认删除吗")){
+                $.get("/quartz/delete/" + objid,{}, function (result) {
+                    if(result.code == '0'){
+                        location.reload();
+                    }else{
+                        alert(result.msg);
+                    }
+                })
+            }
+        }
+    </script>
+</body>
+</html>
