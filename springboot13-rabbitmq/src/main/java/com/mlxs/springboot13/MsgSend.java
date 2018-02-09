@@ -22,4 +22,10 @@ public class MsgSend {
         this.rabbitTemplate.convertAndSend("first", context+"2");
         this.rabbitTemplate.convertAndSend("first", context+"3");
     }
+
+    public String send(String msg){
+        System.out.println("send message: " + msg);
+        rabbitTemplate.convertAndSend("first", msg);
+        return "send success! message = " + msg;
+    }
 }

@@ -16,6 +16,6 @@ import org.springframework.stereotype.Component;
 public class MsgReceiver {
     @RabbitHandler
     public void process(String res) {
-        System.out.println("接受信息 : " + res);
+        System.out.println("--------------------接受信息 ------------------: " + res);
     }
 }
